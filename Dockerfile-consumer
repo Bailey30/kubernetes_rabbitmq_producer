@@ -1,0 +1,27 @@
+# FROM node:19-alpine
+
+
+
+
+# COPY package.json /app/
+# COPY src /app/
+
+# WORKDIR /app
+
+# RUN npm install
+
+# CMD ["node", "server.js"]
+
+# this file in the blueprint for building an image
+# need to use the docker build command
+
+FROM node:19-alpine
+
+ENV MONGO_DB_USERNAME=admin \
+    MONGO_DB_PWD=password
+
+RUN mkdir -p /home/consumer
+
+COPY ./consumer /home/consumer
+
+CMD ["node", "/home/consumer/consumer.js"]
