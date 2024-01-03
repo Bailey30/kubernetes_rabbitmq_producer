@@ -5,14 +5,17 @@ on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
-    steps: 
+    steps:
     - uses: actions/checkout@v2
     - name: docker login
-      env: 
+      env:
         DOCKER_USER: ${{ secrets.DOCKER_USER }}
         DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
       run: |
         docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
     - name: docker build producer
-      run: | 
+      run: |
         docker build -t bailey30/producer -f Dockerfile-producer .
+    - name: docker push producer
+      run: |
+        docker push bailey30/producer:latest
