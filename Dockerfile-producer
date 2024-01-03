@@ -1,9 +1,6 @@
 # FROM node:19-alpine
 
 
-
-
-
 # COPY package.json /app/
 # COPY src /app/
 
@@ -21,8 +18,8 @@ FROM node:19-alpine
 ENV MONGO_DB_USERNAME=admin \
     MONGO_DB_PWD=password
 
-RUN mkdir -p /home/consumer
+RUN mkdir -p /home/producer
 
-COPY ./consumer /home/consumer
+COPY ./producer /home/producer
 
-CMD ["node", "/home/consumer/consumer.js"]
+CMD ["node", "/home/producer/src/server.js"]
