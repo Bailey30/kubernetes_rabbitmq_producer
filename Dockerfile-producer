@@ -18,8 +18,9 @@ FROM node:19-alpine
 ENV MONGO_DB_USERNAME=admin \
     MONGO_DB_PWD=password
 
-RUN mkdir -p /home/producer
+WORKDIR /home/producer
 
-COPY ./ /home/producer
+COPY . .
 
 CMD ["node", "/home/producer/src/server.js"]
+
