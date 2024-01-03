@@ -20,6 +20,6 @@ ENV MONGO_DB_USERNAME=admin \
 
 RUN mkdir -p /home/producer
 
-COPY ./producer /home/producer
+COPY . /home/producer
 
 CMD ["node", "/home/producer/src/server.js"]
