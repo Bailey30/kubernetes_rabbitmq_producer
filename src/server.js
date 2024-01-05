@@ -31,7 +31,7 @@ async function getServiceClusterIP(serviceName, namespace) {
     const k8sApi = kc.makeApiClient(k8s.CoreV1Api);
     try {
         const service = await k8sApi.readNamespacedService(serviceName, namespace);
-        console.log("service clusterIP: ", service.request.body);
+        console.log("service clusterIP: ", service.response.body);
         console.log("service clusterIP: ", service.body.spec);
         return service
     } catch (error) {
