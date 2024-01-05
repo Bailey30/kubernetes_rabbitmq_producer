@@ -31,9 +31,9 @@ async function getServiceClusterIP(serviceName, namespace) {
     const k8sApi = kc.makeApiClient(k8s.CoreV1Api);
     try {
         const service = await k8sApi.readNamespacedService(serviceName, namespace);
-        console.log("service clusterIP: ", service.response.body);
+        // console.log("service clusterIP: ", service.response.body);
         console.log("service clusterIP: ", service.body.spec);
-        return service
+        return service.body.spec.clusterIP
     } catch (error) {
         console.log("error getting service clusterIP: ", error);
     }
@@ -43,10 +43,10 @@ const connectRabbitMQ = async() => {
     try {
 
 
-        getServiceClusterIP("hello-world", "default")
+        const clusterIP = await getServiceClusterIP("hello-world", "default")
             .then((clusterIP) => {
                 console.log(`ClusterIP of ${"hello-world"} in ${"default"}: ${clusterIP}`);
-
+                return clusterIP
             })
             .catch((error) => {
                 console.error('Error:', error);
@@ -54,7 +54,7 @@ const connectRabbitMQ = async() => {
 
         // connection = await amqp.connect("amqp://default_user_h19T9cxik7_FXOICj2Y:r_h_Tv11_oVQ2pts5BE0lMncX9RxfY68@10.97.41.66");
         // connection = await amqp.connect("amqp://default_user_zr37xV6wIH_rXbkMbP1:W1i3xQ8q7dTZMK0fvyZyJpfW7Pw8Q809@10.102.238.168");
-        connection = await amqp.connect(`amqp://${process.env.SECRET_USERNAME}:${process.env.SECRET_PASSWORD}@10.102.238.168`);
+        connection = await amqp.connect(`amqp://${process.env.SECRET_USERNAME}:${process.env.SECRET_PASSWORD}@${clusterIP}/`);
 
         channel = await connection.createChannel();
         await channel.assertQueue("update_profile", { durable: false });
