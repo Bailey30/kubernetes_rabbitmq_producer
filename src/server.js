@@ -34,6 +34,7 @@ const connectRabbitMQ = async() => {
 
 connectRabbitMQ();
 
+
 app.use(bodyParser.urlencoded({
     extended: true
 }));
@@ -89,6 +90,7 @@ app.post('/update-profile', async function(req, res) {
 });
 
 app.get('/get-profile', async function(req, res) {
+    console.log("test")
     console.log("get profile");
 
     try {
