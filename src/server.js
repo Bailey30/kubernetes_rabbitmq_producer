@@ -11,10 +11,7 @@ let cors = require('cors');
 
 const k8s = require('@kubernetes/client-node');
 
-const kc = new k8s.KubeConfig();
-kc.loadFromDefault();
 
-const k8sApi = kc.makeApiClient(k8s.CoreV1Api);
 
 app.use(cors({
     origin: '*',
@@ -27,11 +24,30 @@ let channel;
 // last thing i did was try and push the image to docker hub after changing the username and password
 // need to restart deployment
 
+
+async function getServiceClusterIP(serviceName, namespace) {
+    const kc = new k8s.KubeConfig();
+    kc.loadFromDefault();
+    const k8sApi = kc.makeApiClient(k8s.CoreV1Api);
+    try {
+        const service = await k8sApi.readNamespacedService(serviceName, namespace);
+        return service.spec.clusterIP;
+    } catch (error) {
+        console.log("error getting service clusterIP: ", error);
+    }
+}
+
 const connectRabbitMQ = async() => {
     try {
 
-        const service = await k8sApi.readNamespacedService("hello-world", "default");
-        console.log("service clusterIP: ", service);
+
+        getServiceClusterIP("hello-world", "default")
+            .then((clusterIP) => {
+                console.log(`ClusterIP of ${serviceName} in ${namespace}: ${clusterIP}`);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
 
         // connection = await amqp.connect("amqp://default_user_h19T9cxik7_FXOICj2Y:r_h_Tv11_oVQ2pts5BE0lMncX9RxfY68@10.97.41.66");
         // connection = await amqp.connect("amqp://default_user_zr37xV6wIH_rXbkMbP1:W1i3xQ8q7dTZMK0fvyZyJpfW7Pw8Q809@10.102.238.168");
