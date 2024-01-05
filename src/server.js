@@ -92,6 +92,8 @@ app.post('/update-profile', async function(req, res) {
 app.get('/get-profile', async function(req, res) {
     console.log("test")
     console.log("get profile");
+    console.log(process.env.SECRET_USERNAME);
+    console.log(process.env.SECRET_PASSWORD);
 
     try {
         // Connect to the database
