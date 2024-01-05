@@ -7,6 +7,7 @@ let app = express();
 // import * as amqp from "amqplib";
 let amqp = require("amqplib");
 let cors = require('cors');
+const dns = require('node:dns');
 
 app.use(cors({
     origin: '*',
