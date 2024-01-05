@@ -43,7 +43,8 @@ const connectRabbitMQ = async() => {
 
         getServiceClusterIP("hello-world", "default")
             .then((clusterIP) => {
-                console.log(`ClusterIP of ${serviceName} in ${namespace}: ${clusterIP}`);
+                console.log(`ClusterIP of ${"hello-world"} in ${"default"}: ${clusterIP}`);
+
             })
             .catch((error) => {
                 console.error('Error:', error);
