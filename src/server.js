@@ -23,7 +23,7 @@ const connectRabbitMQ = async() => {
     try {
 
         // connection = await amqp.connect("amqp://default_user_h19T9cxik7_FXOICj2Y:r_h_Tv11_oVQ2pts5BE0lMncX9RxfY68@10.97.41.66");
-        connection = await amqp.connect("amqp://username:password@10.100.5.218:5672");
+        connection = await amqp.connect("amqp://default_user_zr37xV6wIH_rXbkMbP1:W1i3xQ8q7dTZMK0fvyZyJpfW7Pw8Q809@10.102.238.168");
 
         channel = await connection.createChannel();
         await channel.assertQueue("update_profile", { durable: false });

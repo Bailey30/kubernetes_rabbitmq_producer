@@ -20,6 +20,10 @@ ENV MONGO_DB_USERNAME=admin \
 
 WORKDIR /home/producer
 
+COPY package*.json ./
+
+RUN npm install
+
 COPY . .
 
 CMD ["node", "/home/producer/src/server.js"]
