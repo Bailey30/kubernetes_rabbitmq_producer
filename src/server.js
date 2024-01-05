@@ -7,7 +7,14 @@ let app = express();
 // import * as amqp from "amqplib";
 let amqp = require("amqplib");
 let cors = require('cors');
-const dns = require('node:dns');
+
+
+const k8s = require('@kubernetes/client-node');
+
+const kc = new k8s.KubeConfig();
+kc.loadFromDefault();
+
+const k8sApi = kc.makeApiClient(k8s.CoreV1Api);
 
 app.use(cors({
     origin: '*',
@@ -23,10 +30,8 @@ let channel;
 const connectRabbitMQ = async() => {
     try {
 
-
-        dns.lookup(`amqp://${process.env.SECRET_USERNAME}:${process.env.SECRET_PASSWORD}`, (err, address, family) => {
-            console.log('address: %j family: IPv%s', address, family);
-        });
+        const service = await k8sApi.readNamespacedService("hello-world", "default");
+        console.log("service clusterIP: ", service);
 
         // connection = await amqp.connect("amqp://default_user_h19T9cxik7_FXOICj2Y:r_h_Tv11_oVQ2pts5BE0lMncX9RxfY68@10.97.41.66");
         // connection = await amqp.connect("amqp://default_user_zr37xV6wIH_rXbkMbP1:W1i3xQ8q7dTZMK0fvyZyJpfW7Pw8Q809@10.102.238.168");
